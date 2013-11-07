@@ -16,10 +16,14 @@
  */
 package org.jclouds.openstack.neutron.v2_0.features;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.jclouds.openstack.neutron.v2_0.domain.*;
 import org.jclouds.openstack.neutron.v2_0.internal.BaseNeutronApiLiveTest;
 import org.jclouds.openstack.neutron.v2_0.options.*;
+import org.jclouds.openstack.neutron.v2_0.util.PredicateUtil;
+import org.testng.annotations.Test;
 
 import java.util.Set;
 
@@ -30,6 +34,7 @@ import static org.testng.Assert.*;
  *
  * @author Nick Livens
  */
+@Test(groups = "live", testName = "PortApiLiveTest")
 public class PortApiLiveTest extends BaseNeutronApiLiveTest {
 
    public void testGetAndListPorts() {
@@ -123,7 +128,8 @@ public class PortApiLiveTest extends BaseNeutronApiLiveTest {
          assertEquals(ports.size(), 4);
 
          for (Port port : ports) {
-            assertTrue(existingPorts.contains(port));
+            Predicate<Port> idEqualsPredicate = PredicateUtil.createIdEqualsPredicate(port.getId());
+            assertEquals(1, Sets.filter(existingPorts, idEqualsPredicate).size());
             assertTrue(portApi.delete(port.getId()));
          }
          assertTrue(subnetApi.delete(ipv4SubnetId));
