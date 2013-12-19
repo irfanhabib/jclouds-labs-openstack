@@ -20,11 +20,11 @@ import org.jclouds.rackspace.autoscale.v1.features.GroupApiLiveTest;
 import org.testng.annotations.Test;
 
 /**
- * Tests GroupApi Guice wiring and parsing
+ * Tests GroupApi - live
  *
  * @author Zack Shoylev
  */
-@Test(groups = "unit", testName = "AutoscaleUSGroupApiLiveTest", singleThreaded = true)
+@Test(groups = "live", testName = "AutoscaleUSGroupApiLiveTest", singleThreaded = true)
 public class AutoscaleUSGroupApiLiveTest extends GroupApiLiveTest {
    public AutoscaleUSGroupApiLiveTest() {
       provider = "rackspace-autoscale-us";

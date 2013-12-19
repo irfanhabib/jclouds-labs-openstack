@@ -20,7 +20,11 @@ package org.jclouds.openstack.marconi.v1.domain;
 
 import com.google.common.base.Objects;
 
+import javax.inject.Named;
+import java.beans.ConstructorProperties;
 import java.util.Date;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The age of messages in a queue.
@@ -29,12 +33,18 @@ import java.util.Date;
  */
 public class Aged {
 
-   private int age;
-   private Date created;
+   private final int age;
+   private final Date created;
+   @Named("href")
+   private final String id;
 
-   protected Aged(int age, Date created) {
+   @ConstructorProperties({
+         "age", "created", "href"
+   })
+   protected Aged(int age, Date created, String id) {
       this.age = age;
-      this.created = created;
+      this.created = checkNotNull(created, "created required");
+      this.id = checkNotNull(id, "id required");
    }
 
    /**
@@ -51,9 +61,16 @@ public class Aged {
       return created;
    }
 
+   /**
+    * @return Id of the oldest/newest message.
+    */
+   public String getId() {
+      return id;
+   }
+
    @Override
    public int hashCode() {
-      return Objects.hashCode(age, created);
+      return Objects.hashCode(age, created, id);
    }
 
    @Override
@@ -61,12 +78,13 @@ public class Aged {
       if (this == obj) return true;
       if (obj == null || getClass() != obj.getClass()) return false;
       Aged that = Aged.class.cast(obj);
-      return Objects.equal(this.age, that.age) && Objects.equal(this.created, that.created);
+      return Objects.equal(this.age, that.age) && Objects.equal(this.created, that.created)
+            && Objects.equal(this.id, that.id);
    }
 
    protected Objects.ToStringHelper string() {
       return Objects.toStringHelper(this)
-         .add("age", age).add("created", created);
+         .add("age", age).add("created", created).add("id", id);
    }
 
    @Override
@@ -82,14 +100,15 @@ public class Aged {
       return new ConcreteBuilder().fromAged(this);
    }
 
-   public static abstract class Builder {
+   public abstract static class Builder {
       protected abstract Builder self();
 
       protected int age;
       protected Date created;
+      protected String id;
 
       /**
-       * @see Aged#age
+       * @see Aged#getAge()
        */
       public Builder age(int age) {
          this.age = age;
@@ -97,19 +116,27 @@ public class Aged {
       }
 
       /**
-       * @see Aged#created
+       * @see Aged#getCreated()
        */
       public Builder created(Date created) {
          this.created = created;
          return self();
       }
 
+      /**
+       * @see Aged#getId()
+       */
+      public Builder id(String id) {
+         this.id = id;
+         return self();
+      }
+
       public Aged build() {
-         return new Aged(age, created);
+         return new Aged(age, created, id);
       }
 
       public Builder fromAged(Aged in) {
-         return this.age(in.getAge()).created(in.getCreated());
+         return this.age(in.getAge()).created(in.getCreated()).id(in.getId());
       }
    }
 
@@ -119,5 +146,4 @@ public class Aged {
          return this;
       }
    }
-
 }

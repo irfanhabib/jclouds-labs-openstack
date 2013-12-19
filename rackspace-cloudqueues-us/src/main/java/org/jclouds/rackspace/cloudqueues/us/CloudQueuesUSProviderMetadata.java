@@ -66,12 +66,14 @@ public class CloudQueuesUSProviderMetadata extends BaseProviderMetadata {
       Properties properties = new Properties();
       properties.setProperty(CREDENTIAL_TYPE, CloudIdentityCredentialTypes.API_KEY_CREDENTIALS);
       properties.setProperty(SERVICE_TYPE, ServiceType.QUEUES);
+
       properties.setProperty(PROPERTY_ZONES, "ORD,DFW,IAD,SYD,HKG");
       properties.setProperty(PROPERTY_ZONE + ".ORD." + ISO3166_CODES, "US-IL");
       properties.setProperty(PROPERTY_ZONE + ".DFW." + ISO3166_CODES, "US-TX");
       properties.setProperty(PROPERTY_ZONE + ".IAD." + ISO3166_CODES, "US-VA");
       properties.setProperty(PROPERTY_ZONE + ".SYD." + ISO3166_CODES, "AU-NSW");
       properties.setProperty(PROPERTY_ZONE + ".HKG." + ISO3166_CODES, "HK");
+
       return properties;
    }
    
